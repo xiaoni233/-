@@ -20,6 +20,7 @@ public class MyPlayerState : ScriptableObject, IMyState
     protected MyPlayerStateMachine myPlayerStateMachine;
     protected MyPlayerController playerController;
     protected PlayerInputMgr input;
+
     protected float currentSpeed;
 
     public void Initialize(Animator animator,MyPlayerStateMachine myStateMachine,MyPlayerController playerController)

@@ -18,7 +18,7 @@ public class EnemyState_React : MyEnemyState
 
     public override void LogicUpdate()
     {
-        if (enemyController.getHit)
+        if (enemyController.GetHit)
         {
             stateMachine.SwitchState(typeof(EnemyState_Hit));
         }
@@ -26,7 +26,6 @@ public class EnemyState_React : MyEnemyState
         info = animator.GetCurrentAnimatorStateInfo(0);
         if(info.normalizedTime>=0.95f)
         {
-            Debug.Log("chase");
             stateMachine.SwitchState(typeof(EnemyState_Chase));
         }
     }

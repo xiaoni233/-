@@ -10,12 +10,14 @@ public class PlayerState_Idle :MyPlayerState
     {
         base.Enter();
         currentSpeed = playerController.MoveSpeed;
+        myPlayerStateMachine.various.isAttackReady = true;
     }
     public override void LogicUpdate()
-    {
-        if(input.IsAttack)
+    {      
+        if(playerController.GetHit&&(Time.time - myPlayerStateMachine.various.playerExitTime)
+           > myPlayerStateMachine.various.playerHurtIntervalTime)
         {
-            myPlayerStateMachine.SwitchState(typeof(PlayerState_Attack));
+            myPlayerStateMachine.SwitchState(typeof(PlayerState_Hurt));
         }
        if(input.IsMove)
         {

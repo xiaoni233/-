@@ -19,17 +19,17 @@ public class EnemyState_Idle :MyEnemyState
     public override void LogicUpdate()
     {
         timer += Time.deltaTime;
-       if(enemyController.getHit)
+       if(enemyController.GetHit)
         {
             stateMachine.SwitchState(typeof(EnemyState_Hit));
         }
-        if (enemyController.target!=null&&
+        if (enemyController.target != null &&
             enemyController.target.position.x >= enemyController.chasePoints[0].position.x &&
            enemyController.target.position.x <= enemyController.chasePoints[1].position.x)
         {
             stateMachine.SwitchState(typeof(EnemyState_React));
         }
-        if (timer>=enemyController.idleTime)
+        if (timer >= enemyController.idleTime)
         {
             stateMachine.SwitchState(typeof(EnemyState_Walk));
             return;

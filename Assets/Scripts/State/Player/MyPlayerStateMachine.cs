@@ -8,8 +8,14 @@ public class MyPlayerStateMachine :MyStateMachine
     Animator animator;
     MyPlayerController myPlayerController;
     PlayerInputMgr input ;
+    public PlayerVarious various;
 
     void Awake()
+    {
+       
+    }
+
+    void Start()
     {
         animator = GetComponentInChildren<Animator>();
         myPlayerController = GetComponent<MyPlayerController>();
@@ -17,13 +23,11 @@ public class MyPlayerStateMachine :MyStateMachine
         input = PlayerInputMgr.GetInstance();
         foreach (MyPlayerState state in states)
         {
-            state.Initialize(animator, this,myPlayerController);
+            state.Initialize(animator, this, myPlayerController);
             stateTable.Add(state.GetType(), state);
         }
-    }
-
-    void Start()
-    {
-        SwitchOn(stateTable[typeof(PlayerState_Idle)]);
+        various = PlayerVarious.GetInstance();
+        PlayerVarious.GetInstance().animator = animator;
+       SwitchOn(stateTable[typeof(PlayerState_Idle)]);     
     }
 }

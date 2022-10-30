@@ -14,6 +14,10 @@ public class PlayerState_AirJump : MyPlayerState
     }
     public override void LogicUpdate()
     {
+        if (playerController.GetHit)
+        {
+            myPlayerStateMachine.SwitchState(typeof(PlayerState_Hurt));
+        }
         if (playerController.IsFalling || input.IsStopJump)
         {
             myPlayerStateMachine.SwitchState(typeof(PlayerState_Fall));

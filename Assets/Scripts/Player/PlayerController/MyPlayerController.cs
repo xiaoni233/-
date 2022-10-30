@@ -5,59 +5,94 @@ using UnityEngine;
 public class MyPlayerController : MonoBehaviour
 {
     Rigidbody2D rigidbody2D;
+    public Rigidbody2D Rigidbody2D { get => rigidbody2D;  set => rigidbody2D = value; }
     PlayerInputMgr input ;
     PlayerGroundDetector groundDetector;
-    public float MoveSpeed => Mathf.Abs(rigidbody2D.velocity.x);
-    public bool IsGrounded => groundDetector.IsGrounded;
-    public bool IsFalling => rigidbody2D.velocity.y < 0f && !IsGrounded;
-    public bool CanAirJump { get; set; } = true;
+    PlayerVarious various;
+    //用于获得碰撞信息
+     private  HitBox hitBox;
+    private BoxCollider2D boxCollider2D;
+    public BoxCollider2D BoxCollider2D { get => boxCollider2D; set => boxCollider2D = value; }
+    private CircleCollider2D circleCollider;
+    public CircleCollider2D CircleCollider { get => circleCollider; set => circleCollider = value; }
 
-    public EnemyStateMachine enemySM;
-       
+    //"人物状态"
+    public float MoveSpeed => Mathf.Abs(Rigidbody2D.velocity.x);
+    public bool IsGrounded => groundDetector.IsGrounded;
+    public bool IsFalling => Rigidbody2D.velocity.y < 0f && !IsGrounded;
+    public bool CanAirJump { get; set; } = true;
+    [HideInInspector] public float moveDir=0; //移动方向
+
+    [Header("Dash参数")]
+    public float dashTime;//dash时长
+    [HideInInspector] public float dashTimeLeft;//冲锋剩余时间
+    [HideInInspector] public float lastDash=-10f;//上次dash时间点
+    public float dashCoolDown;
+    public float dashSpeed;
+
+    [Header("战斗参数")]
+    public int healthValue;
+    private bool getHit;
+    public bool GetHit { get => getHit; private set => getHit = value; }    
+
+    public float hitStiffTime;
+
+    
     private void Awake()
     {
-        groundDetector = GetComponentInChildren<PlayerGroundDetector>();
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        input = PlayerInputMgr.GetInstance();
-            
+        Rigidbody2D = GetComponent<Rigidbody2D>();
+        BoxCollider2D = GetComponent<BoxCollider2D>();
+        CircleCollider = GetComponent<CircleCollider2D>();
     }
    
-    // Start is called before the first frame update
     void Start()
     {
+        groundDetector = GetComponentInChildren<PlayerGroundDetector>();             
+        input = PlayerInputMgr.GetInstance();
+        hitBox = GetComponentInChildren<HitBox>();
         PlayerInputMgr.GetInstance().EnableGameplayInput();
+        MyEventCenter.GetInstance().AddEventListener("PlayerHurt", SetgetHitTrue);
+        various = PlayerVarious.GetInstance();
+        various.playerHitbox = hitBox;
     }
+
+
+    #region 刚体速度
     public void SetVelocity(Vector3 velocity)
     {
-        rigidbody2D.velocity = velocity;
+        Rigidbody2D.velocity = velocity;
     }
     public void SetVelocityX(float velocityX)
     {
-        rigidbody2D.velocity =new Vector3 (velocityX,rigidbody2D.velocity.y);
+        Rigidbody2D.velocity =new Vector3 (velocityX,Rigidbody2D.velocity.y);
     }
     public void SetVelocityY(float velocityY)
     {
-        rigidbody2D.velocity = new Vector3(rigidbody2D.velocity.x,velocityY);
+        Rigidbody2D.velocity = new Vector3(Rigidbody2D.velocity.x,velocityY);
     }
+    #endregion
+
     public void Move(float speed)
     {
-        if(input.IsMove)
+        if (input.AxesX != 0)
         {
-            transform.localScale = new Vector3(input.AxesX, 1f, 1f);
+            moveDir = Mathf.Abs(input.AxesX) * (1 / input.AxesX);
         }
-        SetVelocityX(speed * input.AxesX);
+        if (input.IsMove)
+        {
+            transform.localScale = new Vector3(moveDir, 1f, 1f);
+        }
+        SetVelocityX(speed * moveDir);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void SetgetHitTrue()
     {
-        Debug.Log(collision.gameObject.name);
-        if(collision.CompareTag("Enemy"))
-        {
-            Debug.Log(collision.gameObject.name + "enter if");
-            if(input.IsAttack)
-            {
-                enemySM.enemyController.getHit = true;
-                Debug.Log("player hit" + enemySM.enemyController.getHit);
-            }
-        }
+        SetgetHit(true);
     }
+    public void SetgetHit(bool value)
+    {
+        GetHit = value;
+    }
+
+   
 }

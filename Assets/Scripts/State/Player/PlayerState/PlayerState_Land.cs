@@ -12,7 +12,11 @@ public class PlayerState_Land :MyPlayerState
 
     public override void LogicUpdate()
     {
-        if(input.IsJump)
+        if (playerController.GetHit)
+        {
+            myPlayerStateMachine.SwitchState(typeof(PlayerState_Hurt));
+        }
+        if (input.IsJump)
         {
             myPlayerStateMachine.SwitchState(typeof(PlayerState_JumpUp));
         }

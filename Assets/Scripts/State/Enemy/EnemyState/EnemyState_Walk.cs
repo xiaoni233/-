@@ -23,7 +23,7 @@ public class EnemyState_Walk : MyEnemyState
     public override void LogicUpdate()
     {
         enemyController.FlipTo(enemyController.patrolPoints[partrolPosition]);
-        if (enemyController.getHit)
+        if (enemyController.GetHit)
         {
             stateMachine.SwitchState(typeof(EnemyState_Hit));
         }

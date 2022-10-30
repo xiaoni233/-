@@ -8,8 +8,14 @@ public class PlayerState_Fall :MyPlayerState
     [SerializeField] float moveSpeed = 5f;
     public override void LogicUpdate()
     {
-        if(playerController.IsGrounded)
+        if (playerController.GetHit)
         {
+            myPlayerStateMachine.SwitchState(typeof(PlayerState_Hurt));
+        }
+        // Debug.Log(playerController.IsGrounded);//bug
+        if (playerController.IsGrounded)
+        {
+            Debug.Log("fall land");
             myPlayerStateMachine.SwitchState(typeof(PlayerState_Land));
         }
         if(input.IsJump)

@@ -14,9 +14,10 @@ public class PlayerState_Run : MyPlayerState
     }
     public override void LogicUpdate()
     {
-        if (input.IsAttack)
+        if (playerController.GetHit&&(Time.time - myPlayerStateMachine.various.playerExitTime)
+           > myPlayerStateMachine.various.playerHurtIntervalTime)
         {
-            myPlayerStateMachine.SwitchState(typeof(PlayerState_Attack));
+            myPlayerStateMachine.SwitchState(typeof(PlayerState_Hurt));
         }
         if (!input.IsMove)
         {
@@ -26,10 +27,21 @@ public class PlayerState_Run : MyPlayerState
         {
             myPlayerStateMachine.SwitchState(typeof(PlayerState_JumpUp));
         }
+        if(input.IsDash)
+        {
+            myPlayerStateMachine.SwitchState(typeof(PlayerState_Dash));
+        }
+        if(input.IsDash)
+        {
+            if(Time.time>=(playerController.lastDash+playerController.dashCoolDown))
+            {
+                myPlayerStateMachine.SwitchState(typeof(PlayerState_Dash));
+            }
+        }
         if(!playerController.IsGrounded)
         {
             myPlayerStateMachine.SwitchState(typeof(PlayerState_Fall));
-        }
+        }       
         currentSpeed = Mathf.MoveTowards(currentSpeed, runSpeed, acceleration * Time.deltaTime);
     }
     public override void PhysicUpdate()

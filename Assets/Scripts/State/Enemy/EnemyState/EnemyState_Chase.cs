@@ -20,7 +20,7 @@ public class EnemyState_Chase : MyEnemyState
     public override void LogicUpdate()
     {
         enemyController.FlipTo(enemyController.target);
-        if (enemyController.getHit)
+        if (enemyController.GetHit)
         {
             stateMachine.SwitchState(typeof(EnemyState_Hit));
         }
@@ -37,7 +37,6 @@ public class EnemyState_Chase : MyEnemyState
         }
         if(Physics2D.OverlapCircle(enemyController.attackPoint.position,enemyController.attackArea,enemyController.targetLayer))
         {
-            Debug.Log("attack ok");
             stateMachine.SwitchState(typeof(EnemyState_Attack));
         }
 
