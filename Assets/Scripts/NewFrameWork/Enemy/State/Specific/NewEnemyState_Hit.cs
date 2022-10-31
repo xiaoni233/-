@@ -21,6 +21,10 @@ public class NewEnemyState_Hit : NewEnemyStates
         {
             stateMachine.SwitchState(typeof(NewEnemyState_Dead));
         }
+        if(enmey.isRecover)
+        {
+            stateMachine.SwitchState(typeof(NewEnemyState_Idle));
+        }
     }
 
     public override void PhysicUpdate()

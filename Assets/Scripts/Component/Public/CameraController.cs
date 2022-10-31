@@ -41,6 +41,14 @@ public class CameraController : MonoBehaviour
         Time.timeScale = 1;
         isPause = false;
     }
+    public void Pause()
+    {
+        Time.timeScale = 0;
+    }
+    public void TimeRecover()
+    {
+        Time.timeScale = 1;
+    }
 
     public void CameraShake(float duration, float strength)
     {      

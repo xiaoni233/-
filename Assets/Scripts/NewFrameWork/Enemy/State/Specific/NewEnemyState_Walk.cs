@@ -25,10 +25,10 @@ public class NewEnemyState_Walk : NewEnemyStates
         {
             stateMachine.SwitchState(typeof(NewEnemyState_React));
         }
-        if(enmey.isIdle)
-        {
-            stateMachine.SwitchState(typeof(NewEnemyState_Idle));
-        }
+        //if(enmey.isIdle)
+        //{
+        //    stateMachine.SwitchState(typeof(NewEnemyState_Idle));
+        //}
     }
 
     public override void PhysicUpdate()

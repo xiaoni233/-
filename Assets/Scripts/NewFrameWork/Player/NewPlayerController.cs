@@ -167,6 +167,17 @@ public class NewPlayerController : MonoBehaviour
             attackAnim.ComboCountPlus();
         }
     }
+    public void EnemyHurtTrigger()
+    {       
+        if (componentTable.ContainsKey(typeof(HitBox))==true)
+        {          
+            HitBox hitBox = (HitBox)componentTable[typeof(HitBox)];           
+            if(hitBox.IsObjHurt("Enemy"))
+            {                
+                MyEventCenter.GetInstance().EventTrigger("NewEnemyHurt");
+            }          
+        }     
+    }
     #endregion
 
 

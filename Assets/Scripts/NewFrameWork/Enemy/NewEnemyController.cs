@@ -16,22 +16,28 @@ public class NewEnemyController : Entity
 
 
     //动画条件和人物状态
-    public bool isMove=>InRange();
+    public bool isMove=>InRange();//不在范围内会触发bug
     public bool isWall;
     public bool isIdle => AtPoint();
     public bool isHit;
-    public bool isReact;
+    public bool isReact=>PlayerCheck();
     public bool isDead;
+    public bool isRecover;
     public bool isOutRange => OutOfRange();
     
     public bool isAttack;
-    public bool isAttackReady;
+    public bool isAttackReady=>PlayerCheck(attackDistance);
 
     public int moveDir;
+    public float attackDistance = 0.5f;
+    public float hitShakeDuration;
+    public float hitShakeStrength;
+    public int hitPauseDuration;//帧数
     //获得组件
     private void Awake()
     {
         isAttack = false;
+        moveDir = 1;
         Rb = GetComponent<Rigidbody2D>();
         input = GetComponentInChildren<PlayerInputMgr>();
         BoxColl = GetComponent<BoxCollider2D>();
@@ -39,7 +45,15 @@ public class NewEnemyController : Entity
         //自定义组件
         ComponentInitialize();
     }
+    private void Start()
+    {
+        MyEventCenter.GetInstance().AddEventListener("NewEnemyHurt", SetIsHitTrue);
+    }
 
+    private void Update()
+    {
+       
+    }
     #region 刚体速度
     /// <summary>
     /// 刚体
@@ -78,7 +92,7 @@ public class NewEnemyController : Entity
 
     #region 动画事件函数
     public void Move()
-    { 
+    {
         EnemyMove move= GetComponentInChildren<EnemyMove>();
         move.MoveBySpeed();
     }
@@ -90,25 +104,70 @@ public class NewEnemyController : Entity
     {
         isHit = true;
     }
+    public void SetIsRecoverTrue()
+    {
+        isRecover = true;
+    }
+    public void SetIsRecoverFalse()
+    {
+        isRecover = false;
+    }
+    public void Pause()
+    {
+        CameraController.Instance.Pause();
+    }
+    public void TimeRecover()
+    {
+        CameraController.Instance.TimeRecover();
+    }
+    public void HitPause()
+    {
+        CameraController.Instance.HitPause(hitPauseDuration);
+    }
+    public void HitCameraShake()
+    {
+        CameraController.Instance.CameraShake(hitShakeDuration, hitShakeStrength);
+    }
+
+
     #endregion
 
     #region 调用组件函数
-    public bool OutOfRange()
+    private bool OutOfRange()
     {
         Patrol patrol = GetComponentInChildren<Patrol>();
        return !patrol.PatrolCheckXIn();
     }
-    public bool InRange()
+    private bool InRange()
     {
         Patrol patrol = GetComponentInChildren<Patrol>();
         return patrol.PatrolCheckXIn();
     }
-    public bool AtPoint()
+    private bool AtPoint()
     {
         Patrol patrol = GetComponentInChildren<Patrol>();
         return patrol.PatrolAtLPoint() || patrol.PatrolAtRPoint();
     }
+    private bool PlayerCheck()
+    {
+        PlayerCheck check = GetComponentInChildren<PlayerCheck>();
+        return check.CheckPlayer();
+    }
+    private bool PlayerCheck(float distance)
+    {
+        PlayerCheck check = GetComponentInChildren<PlayerCheck>();
+        return check.CheckPlayer(distance);
+    }
+    private void SetIsHitTrue()
+    {
+        Debug.Log("SetIsHitTrue()");
+        isHit = true;
+    }
+    private void SetIsHitFalse()
+    {
+        isHit = false;
+    }
    
-
+    
     #endregion
 }

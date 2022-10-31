@@ -25,6 +25,10 @@ public class NewPlayerAttackAnim : PlayerComponent
             animator.SetTrigger("LightAttack");
             animator.SetInteger("ComboCount", comboCount);
         }
+        if(comboCount>3)
+        {
+            SetComboCountOne();
+        }
     }
     public void SetComboCountOne()
     {

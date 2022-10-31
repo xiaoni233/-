@@ -21,7 +21,7 @@ public class NewEnemyState_React : NewEnemyStates
         {
             stateMachine.SwitchState(typeof(NewEnemyState_Hit));
         }
-        if (enmey.isAttack)
+        if (enmey.isAttackReady)
         {
             stateMachine.SwitchState(typeof(NewEnemyState_Attack));
         }

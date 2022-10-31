@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyMove : EnemyComponent
 {
-    public float speed;
+    public float speed=10;
     public float moveForce;
 
     protected override void Start()
@@ -16,7 +16,7 @@ public class EnemyMove : EnemyComponent
     {
         if (controller.isOutRange)
         {
-            transform.localScale = new Vector3(-controller.moveDir, transform.localScale.y, transform.localScale.z);
+            controller.transform.localScale = new Vector3(-controller.moveDir, transform.localScale.y, transform.localScale.z);
             controller.moveDir = -controller.moveDir;
         }
     }
