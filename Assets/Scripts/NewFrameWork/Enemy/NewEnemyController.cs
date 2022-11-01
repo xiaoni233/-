@@ -21,13 +21,14 @@ public class NewEnemyController : Entity
     public bool isIdle => AtPoint();
     public bool isHit;
     public bool isReact=>PlayerCheck();
-    public bool isDead;
+    public bool isDead=>health<0;
     public bool isRecover;
     public bool isOutRange => OutOfRange();
     
     public bool isAttack;
     public bool isAttackReady=>PlayerCheck(attackDistance);
 
+    public int health;
     public int moveDir;
     public float attackDistance = 0.5f;
     public float hitShakeDuration;
@@ -103,6 +104,7 @@ public class NewEnemyController : Entity
     public void SetHitTrue()
     {
         isHit = true;
+       
     }
     public void SetIsRecoverTrue()
     {
@@ -128,7 +130,10 @@ public class NewEnemyController : Entity
     {
         CameraController.Instance.CameraShake(hitShakeDuration, hitShakeStrength);
     }
-
+    public void AttackPlayer()
+    {
+        MyEventCenter.GetInstance().EventTrigger("NewPlayerHurt");
+    }
 
     #endregion
 
@@ -162,6 +167,7 @@ public class NewEnemyController : Entity
     {
         Debug.Log("SetIsHitTrue()");
         isHit = true;
+        health--;
     }
     private void SetIsHitFalse()
     {
@@ -170,4 +176,6 @@ public class NewEnemyController : Entity
    
     
     #endregion
+
+
 }

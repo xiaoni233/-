@@ -17,6 +17,7 @@ public class NewPlayerController : MonoBehaviour
     public MyConponent[] myComponents;
     private Dictionary<System.Type, MyConponent> componentTable;
 
+    public ScreenFlash sf;
     private PlayerMove move;
     private ChangeDirection direction;
     private GroundCheck groundDetector;
@@ -32,6 +33,7 @@ public class NewPlayerController : MonoBehaviour
     public bool isLightAttack => input.IsLightAttackButtonDowm();
     public bool isAttack;
     public bool isAttackReady;
+    public bool isHurt=false;
     //打击出问题的原因是被默认状态抢animator
     
     //其他参数
@@ -39,11 +41,15 @@ public class NewPlayerController : MonoBehaviour
     public float fallDistance = 1.45f;
     public float landDistance = 1.15f;
     public float fallGravityScale;
+
+    public float hitTimePic;//帧数
+    public float hitStrength;
+    public int heatlh;
     //public float airMoveSpeed;
     //获得组件
     private void Awake()
     {
-        isAttack = false;
+      
         Rb = GetComponent<Rigidbody2D>();
         input = GetComponentInChildren<PlayerInputMgr>();
         BoxColl = GetComponent<BoxCollider2D>();
@@ -55,6 +61,15 @@ public class NewPlayerController : MonoBehaviour
         direction = GetComponentInChildren<ChangeDirection>();
         groundDetector = GetComponentInChildren<GroundCheck>();
         jump= GetComponentInChildren<PlayerJump>();
+
+        //状态初始化
+        isAttack = false;
+        HealthInit();
+    }
+    private void Start()
+    {
+        
+        MyEventCenter.GetInstance().AddEventListener("NewPlayerHurt", Hurt);
     }
     private void FixedUpdate()
     {
@@ -190,6 +205,23 @@ public class NewPlayerController : MonoBehaviour
         }
     }
 
+    #region 其他函数
+    private void Hurt()
+    {
+        heatlh--;
+        MyHealthBar.HealthCurrent=heatlh;
+        sf.FlashScreen();
+        HitShake();
+    }
+    private void HealthInit()
+    {
+        MyHealthBar.HealthCurrent = heatlh;
+    }
+    private void HitShake()
+    {
+        CameraController.Instance.CameraShake(hitTimePic, hitStrength);
+    }
+    #endregion
 }
 
 
