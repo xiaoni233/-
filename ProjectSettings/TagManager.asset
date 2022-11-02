@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
+  - Collection
+  - Enemies
   layers:
   - Default
   - TransparentFX
@@ -12,9 +13,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
-  - Player
-  - Enemy
+  - map
+  - Obstacle
+  - back
   - 
   - 
   - 
@@ -42,12 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
-    uniqueID: 3597425081
+  - name: Frontground
+    uniqueID: 3825495267
     locked: 0
-  - name: Grid
-    uniqueID: 2020320197
-    locked: 0
-  - name: Player
-    uniqueID: 3963336923
+  - name: map
+    uniqueID: 920803165
     locked: 0
