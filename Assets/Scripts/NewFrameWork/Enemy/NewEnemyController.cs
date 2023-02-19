@@ -51,10 +51,11 @@ public class NewEnemyController : Entity
         MyEventCenter.GetInstance().AddEventListener("NewEnemyHurt", SetIsHitTrue);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
        
     }
+
     #region 刚体速度
     /// <summary>
     /// 刚体
@@ -108,10 +109,12 @@ public class NewEnemyController : Entity
     }
     public void SetIsRecoverTrue()
     {
+        
         isRecover = true;
     }
     public void SetIsRecoverFalse()
     {
+       
         isRecover = false;
     }
     public void Pause()
@@ -171,6 +174,7 @@ public class NewEnemyController : Entity
     }
     private void SetIsHitFalse()
     {
+        Debug.Log("SetIsHitFalse()");
         isHit = false;
     }
    

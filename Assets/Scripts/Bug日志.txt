@@ -1,0 +1,8 @@
+//11.3
+
+发现bug，动画机耦合bug，多个同类Enemy共用一个Animation和Animation Controller导致的状态切换异常
+解决方法，利用预设体创建Enemy后，copy原来和粘贴出新的动画控制器，将动画控制器赋值给新Enemies的Animator上
+
+修复因地图高低不一导致的敌人碰撞体卡住问题
+
+修复人物检测没有改变方向的问题

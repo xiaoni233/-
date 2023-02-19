@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class NewPlayerController : MonoBehaviour
 {
     //组件
@@ -73,8 +73,7 @@ public class NewPlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        // Debug.Log(groundDetector.IsGrounded); 
-      
+        Loss();
     }
 
     #region 刚体速度
@@ -114,12 +113,20 @@ public class NewPlayerController : MonoBehaviour
     #endregion
 
     #region 事件函数
+    void Loss()
+    {
+        if (heatlh <= 0)
+        {
+            SceneManager.LoadScene(2);
+        }
+    }
     void Move()
     {
-        if (groundDetector.CheckGround())
-        {
-            move.Move();
-        }      
+        //if (groundDetector.CheckGround())
+        //{
+        //    move.Move();
+        //}      
+        move.Move();
     }
    
     void PauseMove()
@@ -183,12 +190,12 @@ public class NewPlayerController : MonoBehaviour
         }
     }
     public void EnemyHurtTrigger()
-    {       
+    {    
         if (componentTable.ContainsKey(typeof(HitBox))==true)
-        {          
+        {         
             HitBox hitBox = (HitBox)componentTable[typeof(HitBox)];           
             if(hitBox.IsObjHurt("Enemy"))
-            {                
+            {
                 MyEventCenter.GetInstance().EventTrigger("NewEnemyHurt");
             }          
         }     
@@ -222,6 +229,7 @@ public class NewPlayerController : MonoBehaviour
         CameraController.Instance.CameraShake(hitTimePic, hitStrength);
     }
     #endregion
+  
 }
 
 
